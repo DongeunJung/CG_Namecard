@@ -1,0 +1,214 @@
+%201621161정동은_Assignment2
+
+/inch { 72 mul } def
+/cm { inch 2.54 div } def
+
+/boundary{%draw boundary
+0 0 moveto
+9 cm 0 lineto
+9 cm 5 cm lineto
+0 5 cm lineto
+closepath
+0 setlinewidth
+stroke
+/subboundary{
+0 0 moveto
+8.8 cm 0 rlineto
+0 4.8 cm rlineto
+-8.8 cm 0 rlineto
+closepath
+fill
+stroke
+} def
+0.1 cm 0.1 cm translate
+subboundary
+} def
+
+/boxbehindname{
+gsave
+2 cm 0.4 cm translate
+0 0 moveto
+20 0 lineto
+20 9 lineto
+0 9 lineto
+closepath
+0 0 0 setrgbcolor
+fill
+stroke
+grestore
+}def
+
+/name{%show name
+/stringshow{%move string to center
+dup stringwidth pop%get width of string
+2 div
+%the reason that 4.4 cm is used not 4.5 cm which is half of boundary width is 0.1 cm 0.1 cm translation when subboundary was drawed
+4.4 cm exch sub%half of width of boundary
+0 rmoveto
+show
+} def
+/NimbusMonoPS-Bold findfont
+11 scalefont
+setfont
+255 255 255 setrgbcolor
+0 14 moveto
+(PostScript Programmer)stringshow
+0 5 moveto
+(Dongeun Jung)stringshow
+} def
+
+/math{%show String Math at the top right of the card
+/rightshow{%using this function to move a string right
+dup stringwidth pop
+8.9 cm exch sub%9cm-0.1cm because of traslation in boundary function
+0 rmoveto
+show
+} def
+/C059-Bold findfont
+20 scalefont
+setfont
+255 255 255 setrgbcolor
+0 4 cm moveto
+(Math ) rightshow
+} def
+
+/major{
+/leftshowofmath{%show string at left side of math
+dup stringwidth pop
+/C059-Bold findfont%get exactly same type of font with the string Math
+20 scalefont
+setfont
+(Math ) stringwidth pop
+8.9 cm exch sub
+exch sub
+0 rmoveto
+/C059-Italic findfont
+10 scalefont
+setfont
+255 255 255 setrgbcolor
+show
+} def
+/C059-Italic findfont
+10 scalefont
+setfont
+255 255 255 setrgbcolor
+0 4.3 cm moveto
+(double major in )leftshowofmath
+0 4.0 cm moveto
+(and computer )leftshowofmath
+} def
+
+/sigma{
+0 0 moveto
+2.6 cm 0 lineto
+currentpoint translate
+0 -0.7 cm lineto
+currentpoint translate
+-0.2 cm 0 translate
+0 0 0.2 cm 0 90 arc
+currentpoint translate
+-1.5 cm 0 lineto
+currentpoint translate
+-45 rotate
+1 cm 0 lineto
+currentpoint translate
+90 rotate
+-1 cm 0 lineto
+currentpoint translate
+-45 rotate
+1.5 cm 0 lineto
+currentpoint translate
+0 0.2 cm translate
+0 0 0.2 cm 270 360 arc
+currentpoint translate
+0 -0.6 cm lineto
+currentpoint translate
+-2.5 cm 0 lineto
+currentpoint translate
+45 rotate
+1.5 cm 0 lineto
+currentpoint translate
+-45 rotate
+closepath
+currentpoint translate
+fill
+stroke
+} def
+
+/hexahedron{
+0 0 moveto
+10 0  rlineto
+0 10 rlineto
+-10 0 rlineto
+closepath
+0 10 moveto
+10 10 lineto
+15 15 lineto
+5.5 15 lineto
+closepath
+10 0 moveto
+5 5 rlineto
+0 10 rlineto
+-5 -5 rlineto
+closepath
+0 setlinewidth
+}def
+
+/circle{
+0 0 moveto
+50 rotate
+9 { 21 rotate 10 0 lineto currentpoint translate } repeat
+0.5 setlinewidth
+255 255 255 setrgbcolor
+stroke
+}def
+
+100 400 translate
+
+/namecard{
+boundary
+
+%show sigma using for
+gsave
+5.8 cm 4.0 cm translate
+0 0.005 1 { setgray sigma -0.1 0.05 translate
+} for 0.5 setgray sigma
+0.4 setgray sigma
+grestore
+%use gsave and grestore to not let the translations affect below operations
+
+%draw circle at the bottom left behind hexahedrons
+gsave
+2.3 cm 0.05 cm translate
+circle
+grestore
+
+boxbehindname
+name
+
+gsave
+3.5 3 scale
+-10.5 0.5 translate
+gsave
+/count 4 def
+0{
+1 add dup count eq
+{exit}
+{11.5 0 translate 0.6 0.7 scale hexahedron 0 setgray fill stroke
+hexahedron 1 setgray 0.3 setlinewidth stroke }ifelse
+}loop
+pop%
+grestore
+grestore
+
+math
+major
+} def
+
+namecard
+
+showpage
+
+%sigma : translate, rotate, for
+%hexahedron : translate, scale, loop
+%circle : translate, rotate, repeat
